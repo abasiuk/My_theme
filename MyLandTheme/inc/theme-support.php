@@ -60,15 +60,16 @@ function land_customize_css(){
         .navbar__list li a{
             color: <?php echo $color; ?>;
         }
-        .nav-container, .buttons, .main-color{
+        .nav-container, .buttons, .main-color, .land-sidebar__title, .tagcloud a, .btn{
             background-color: <?php echo $maincolor; ?>;
         }
-        .logo:first-letter, h1 span, h2 span, h3 span, h4 span, h5 span, h6 span {
+        .logo:first-letter, h1 span, h2 span, h3 span, h4 span, h5 span, h6 span, .land-sidebar__content ul li, .land-sidebar__content ul li a {
             color: <?php echo $maincolor; ?>;
         }
         .main-head{
             background-color:  <?php echo $header_bg_color; ?>;
         }
+
     </style>
     <?php
 
@@ -125,3 +126,29 @@ function land_get_embedded_media( $type = array() ){
 
     return $output;
 }
+
+/*Sidebar*/
+
+function land_sidebar_init(){
+
+    register_sidebar(array(
+            'name' => esc_html("Land Sidebar", "landtheme"),
+            'id' => 'land-sidebar',
+            'description' => 'Dynamic Sidebar',
+            'before_widget' => '<section id="%1$s" class = "land-sidebar__content %2$s">',
+            'after_widget' => '</section>',
+            'before_title' => '<h2 class="land-sidebar__title">',
+            'after_title' => '</h2>'
+        )
+    );
+}
+add_action('widgets_init', 'land_sidebar_init');
+
+function land_tagcloud_font_change($args){
+    $args['smallest'] = 12;
+    $args['largest'] = 14;
+
+    return $args;
+}
+
+add_filter('widget_tag_cloud_args', 'land_tagcloud_font_change');

@@ -19,7 +19,8 @@ jQuery(document).ready(function() {
             }
         }
     });
-    jQuery('.toggle-mnu').on('click', function () {
+    jQuery('.toggle-mnu').on('click', function (e) {
+        e.preventDefault();
         jQuery('.toggle-mnu').toggleClass('on');
         jQuery('.nav-container').toggleClass('show-menu');
         jQuery('.logo').toggleClass('invis');
@@ -50,11 +51,17 @@ jQuery(document).ready(function() {
 
     jQuery('#main-form').on('submit', function (e) {
         e.preventDefault();
+
+        jQuery('.js-show-feedback').removeClass('js-show-feedback');
+
         var form = jQuery(this),
             name = form.find('#name').val(),
             email = form.find('#email').val(),
             message = form.find('#message').val(),
             ajaxurl = form.data('url');
+
+        form.find('input, button, textarea').attr('disabled','disabled');
+        jQuery('.js-form-submission').addClass('js-show-feedback');
 
         jQuery.ajax({
             url: ajaxurl,
@@ -66,12 +73,38 @@ jQuery(document).ready(function() {
                 action : 'land_save_user_contact_form'
             },
             error: function (response) {
-                console.log(response);
+                jQuery('.js-form-submission').removeClass('js-show-feedback');
+                jQuery('.js-form-error').addClass('js-show-feedback');
+                form.find('input, button, textarea').removeAttr('disabled');
             },
             success: function (response) {
-                
+                if( response == 0 ){
+
+                    setTimeout(function(){
+                        jQuery('.js-form-submission').removeClass('js-show-feedback');
+                        jQuery('.js-form-error').addClass('js-show-feedback');
+                        form.find('input, button, textarea').removeAttr('disabled');
+                    },1500);
+
+                } else {
+
+                    setTimeout(function(){
+                        jQuery('.js-form-submission').removeClass('js-show-feedback');
+                        jQuery('.js-form-success').addClass('js-show-feedback');
+                        form.find('input, button, textarea').removeAttr('disabled').val('');
+                    },1500);
+
+                }
             }
         });
 
     });
+    document.body.onload = function () {
+        setTimeout( function () {
+            var preloader = jQuery('#preloader');
+            if (!preloader.hasClass('done')){
+                preloader.addClass('done');
+            }
+        }, 1000);
+    }
 });

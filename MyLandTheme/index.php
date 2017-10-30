@@ -15,24 +15,30 @@
             <main id="main" class="site-main" role="main">
 
                 <div class="container land-posts-container">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <?php
 
-                    <?php
+                            if( have_posts() ):
 
-                    if( have_posts() ):
+                                while( have_posts() ): the_post();
 
-                        while( have_posts() ): the_post();
+                                    /*
+                                    $class = 'reveal';
+                                    set_query_var( 'post-class', $class );
+                                    */
+                                    get_template_part( 'template-parts/content', get_post_format() );
 
-                            /*
-                            $class = 'reveal';
-                            set_query_var( 'post-class', $class );
-                            */
-                            get_template_part( 'template-parts/content', get_post_format() );
+                                endwhile;
 
-                        endwhile;
+                            endif;
 
-                    endif;
-
-                    ?>
+                            ?>
+                        </div>
+                        <div class="col-md-3">
+                            <?php get_sidebar(); ?>
+                        </div>
+                    </div>
 
                 </div><!-- .container -->
 

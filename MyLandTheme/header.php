@@ -22,6 +22,9 @@
 </head>
 <?php $add_class = ''; $header_bg = ''; if (!is_home()){ $add_class = 'main_bg'; $header_bg = get_header_image(); } ?>
 <body <?php body_class($add_class); ?> style="background-image: url(<?php echo $header_bg; ?>)">
+<div class="preloader" id="preloader">
+    <div class="load"></div>
+</div>
 <div class="nav-container">
     <nav class="navbar">
         <?php
